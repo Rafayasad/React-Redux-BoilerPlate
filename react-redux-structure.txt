@@ -1,0 +1,111 @@
+complete React-Redux Structure
+
+Step # 01 :
+
+first you need to install redux :
+i, npm install react-redux redux
+ii, npm install redux-thunk (this package is for heavy data managements like : database )
+
+Step # 02:
+
+Confriguration of React-Redux:
+i, make a main folder name as,
+	Store(folder)
+		|______i, make a file under this folder (index.js)
+ii, In index.js file do some configuration of redux:
+	i, import Reducer from './reducer';
+	ii, import {createStore , applymiddleware} from 'redux';
+	iii, import thunk from 'redux-thunk';
+	iv, make a variable 
+		|_____ const store = createStore(reducer,applymiddleware(thunk))
+	v, export it
+		|_____ export deafult store;	
+
+Step # 03 :
+
+i, use a main folder 
+	Store (main folder)
+		|___________i, Reducer (child folder)
+					|_______ i, index.js (file){connect all reducers files in index.js file}
+									|____ i, import {combineReducers} from 'redux';
+									|____ ii, import all reducers files like auth_reducer.js or app_reducer.js
+									|____ iii, export it simple.
+					|_______ ii, auth_reducer.js(file)
+					|_______ iii, app_reducer.js(file)
+	|___________ii, action (child folder)
+					|_______ i, index.js (file){all functional works are doing here action folder}
+
+Step # 04 :
+
+connect redux to our project main file Index.js:
+i, import { Provider } from 'react-redux';
+ii, import store from './store';
+iii, <Provider store={store}>
+    <App />
+    </Provider>
+iv,App.jsx
+	|____ import {connect} from 'react-redux'; {this import will connect in App.JSX file}
+
+
+this is complete structure of react-redux.
+x============x====================x====================x==========================x======================x=========================x=================================x
+Now we will learn:
+i, How to set data or get data from reducer and how action functions will work :
+
+there are two types of functions will work on react-redux:
+	|___i, const mapStateToProps = (state) =>{
+		// this function get properties from states // 
+		
+		name:state.name; {this will get name from reducer state or we can access it to our project anywhere we wants}
+
+					}
+	|___ii, const mapDispatchToProps = (dispatch) =>{
+		// this function use for functional works which is get from action folder //
+		// any function which we made on action folder it must be import on app.jsx file before we are using here //
+		
+		set_data: ()=> dispatch(set_data()) {this is example function which is set on action folder in index.js file}
+					}
+
+	|___iii, export it,
+			|____export default connect(mapStateToProps,mapDispatchToProps)(App);
+					
+
+Hint:
+the best way to write these functions on the last of the app.jsx file.
+x==============x===============================================x===============================x===========================x==========================================x
+Basic structure of reducer and action folder:
+
+i, reducer/index.js :
+	
+	const INITIAL_STATE = {
+			name:"Rafay Asad",
+			email:"asadrafay998@gmail.com"
+				}
+
+	export default (state = INITIAL_STATE , action){
+			console.log("action data",action); { this will catch data from action folder }
+			return state;		
+
+ii, action/index.js :
+	// this is basic funtion format which isnt connected to redux //
+	// every function which are made here will be import on app.jsx //
+	const set_data = () =>{
+			console.log("hello redux");
+				}
+
+	export {
+		set_data
+		}
+
+	//there is function which is connected to redux //
+
+	const set_data = () =>{
+    	return (dispatch) =>{
+        dispatch({type:'SETDATA'})
+    			}
+				}
+
+	export {
+    		set_data
+		}
+x==================x======================x====================================x======================================x===============================================x
